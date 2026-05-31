@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 - RE:FACTORY</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/about.css">
+    <link rel="stylesheet" href="styles/login.css">
+</head>
+<body class="page-login">
+    <header class="site-header login-header">
+        <a href="index.html" class="logo">
+            <img src="assets/images/logo.png" alt="RE:FACTORY">
+        </a>
+
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li class="has-dropdown">
+                    <button type="button" class="nav-toggle" aria-haspopup="true" aria-expanded="false">
+                        More <span class="caret">&#9662;</span>
+                    </button>
+                    <ul class="dropdown">
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="support.html">Support</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <a href="signup.html" class="signup-link">회원가입</a>
+    </header>
+
+    <main class="login-main">
+        <div class="login-card">
+            <div class="login-brand">
+                <p class="login-eyebrow">Welcome to</p>
+                <h1 class="login-title">RE:FACTORY</h1>
+            </div>
+
+            <p class="login-subtitle">계정 정보로 로그인하세요</p>
+
+            <form class="login-form" id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="login-email">이메일</label>
+                    <input type="email" id="login-email" name="email" placeholder="name@company.com" autocomplete="email" required>
+                </div>
+
+                <div class="form-group">
+                    <div class="label-row">
+                        <label for="login-password">비밀번호</label>
+                        <a href="forgot.html" class="forgot-link">비밀번호 찾기</a>
+                    </div>
+                    <div class="password-wrap">
+                        <input type="password" id="login-password" name="password" placeholder="비밀번호를 입력하세요" autocomplete="current-password" required>
+                        <button type="button" class="password-toggle" aria-label="비밀번호 표시" data-target="login-password">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <label class="remember-me">
+                    <input type="checkbox" id="login-remember">
+                    <span>로그인 상태 유지</span>
+                </label>
+
+                <button type="submit" class="primary-btn login-submit">로그인</button>
+            </form>
+
+            <div class="divider">
+                <span>또는 SNS로 계속하기</span>
+            </div>
+
+            <div class="social-buttons">
+                <button type="button" class="social-btn social-kakao" data-provider="Kakao">
+                    <span class="social-icon">
+                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                            <path fill="currentColor" d="M12 3C6.48 3 2 6.58 2 11c0 2.83 1.83 5.33 4.6 6.78l-.84 3.04c-.07.27.22.5.46.36l3.62-2.42c.71.1 1.43.16 2.16.16 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
+                        </svg>
+                    </span>
+                    <span class="social-label">카카오</span>
+                </button>
+
+                <button type="button" class="social-btn social-google" data-provider="Google">
+                    <span class="social-icon">
+                        <svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true">
+                            <path fill="#FFC107" d="M43.611 20.083H42V20H24v8h11.303c-1.649 4.657-6.08 8-11.303 8-6.627 0-12-5.373-12-12s5.373-12 12-12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 12.955 4 4 12.955 4 24s8.955 20 20 20 20-8.955 20-20c0-1.341-.138-2.65-.389-3.917z"/>
+                            <path fill="#FF3D00" d="M6.306 14.691l6.571 4.819C14.655 15.108 18.961 12 24 12c3.059 0 5.842 1.154 7.961 3.039l5.657-5.657C34.046 6.053 29.268 4 24 4 16.318 4 9.656 8.337 6.306 14.691z"/>
+                            <path fill="#4CAF50" d="M24 44c5.166 0 9.86-1.977 13.409-5.192l-6.19-5.238C29.211 35.091 26.715 36 24 36c-5.222 0-9.652-3.343-11.303-8L6.61 32.971C9.93 38.556 16.51 44 24 44z"/>
+                            <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303c-.792 2.237-2.231 4.166-4.087 5.571.001-.001.002-.001.003-.002l6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z"/>
+                        </svg>
+                    </span>
+                    <span class="social-label">Google</span>
+                </button>
+
+                <button type="button" class="social-btn social-naver" data-provider="Naver">
+                    <span class="social-icon">
+                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                            <path fill="currentColor" d="M14.4 12.6L9.6 4H3v16h6.6V11.4l4.8 8.6H21V4h-6.6v8.6z"/>
+                        </svg>
+                    </span>
+                    <span class="social-label">네이버</span>
+                </button>
+
+                <button type="button" class="social-btn social-github" data-provider="GitHub">
+                    <span class="social-icon">
+                        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                            <path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                        </svg>
+                    </span>
+                    <span class="social-label">GitHub</span>
+                </button>
+            </div>
+
+            <p class="signup-prompt">
+                아직 계정이 없으신가요?
+                <a href="signup.html">회원가입</a>
+            </p>
+        </div>
+    </main>
+
+    <!-- Toast for fake submit -->
+    <div class="toast" id="loginToast" role="status" aria-live="polite">
+        <div class="toast-icon">&#10003;</div>
+        <div class="toast-body">
+            <p class="toast-title">로그인 중...</p>
+            <p class="toast-sub">잠시 후 메인 페이지로 이동합니다.</p>
+        </div>
+    </div>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/login.js"></script>
+</body>
+</html>

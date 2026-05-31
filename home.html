@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RE:FACTORY - Home</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/home.css">
+</head>
+<body class="page-home">
+    <img src="assets/images/main-hero-2.png" alt="" class="bg-image">
+
+    <header class="site-header home-header">
+        <a href="home.html" class="logo">
+            <img src="assets/images/logo.png" alt="RE:FACTORY">
+        </a>
+
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li><a href="diagnose.html">Code Insight</a></li>
+            </ul>
+        </nav>
+
+        <div class="profile-wrap">
+            <button type="button" class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+                <span class="profile-avatar">U</span>
+                <span class="profile-name">User</span>
+                <span class="profile-caret">&#9662;</span>
+            </button>
+            <ul class="profile-menu" id="profileMenu">
+                <li class="profile-menu-header">
+                    <span class="profile-avatar lg">U</span>
+                    <div>
+                        <p class="profile-menu-name">User</p>
+                        <p class="profile-menu-email">user@refactory.io</p>
+                    </div>
+                </li>
+                <li><a href="mypage.html">마이페이지</a></li>
+                <li><a href="my-code.html">내 코드</a></li>
+                <li><a href="settings.html">설정</a></li>
+                <li class="divider"></li>
+                <li><a href="index.html" class="logout-link">로그아웃</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">RE:FACTORY</h1>
+            <p class="hero-tagline">Analyze. Visualize. Refactor.</p>
+            <p class="hero-description">
+                코드를 해부하고<br>
+                구조를 시각화하고<br>
+                더 나은 형태로 다시 설계합니다.
+            </p>
+            <a href="diagnose.html" class="cta-button">코드 진단하기</a>
+        </div>
+    </main>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/home.js"></script>
+</body>
+</html>

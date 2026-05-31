@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>코드 부분 분석하기 - RE:FACTORY</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/home.css">
+    <link rel="stylesheet" href="styles/snippet.css">
+    <!-- highlight.js for syntax coloring -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body class="page-home page-snippet">
+    <header class="site-header home-header">
+        <a href="home.html" class="logo">
+            <img src="assets/images/logo.png" alt="RE:FACTORY">
+        </a>
+
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li><a href="diagnose.html" class="active">Code Insight</a></li>
+            </ul>
+        </nav>
+
+        <div class="profile-wrap">
+            <button type="button" class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+                <span class="profile-avatar">U</span>
+                <span class="profile-name">User</span>
+                <span class="profile-caret">&#9662;</span>
+            </button>
+            <ul class="profile-menu" id="profileMenu">
+                <li class="profile-menu-header">
+                    <span class="profile-avatar lg">U</span>
+                    <div>
+                        <p class="profile-menu-name">User</p>
+                        <p class="profile-menu-email">user@refactory.io</p>
+                    </div>
+                </li>
+                <li><a href="mypage.html">마이페이지</a></li>
+                <li><a href="my-code.html">내 코드</a></li>
+                <li><a href="settings.html">설정</a></li>
+                <li class="divider"></li>
+                <li><a href="index.html" class="logout-link">로그아웃</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="snippet-main">
+        <nav class="breadcrumb">
+            <a href="diagnose.html">Code Insight</a>
+            <span class="sep">/</span>
+            <span class="current">코드 부분 분석하기</span>
+        </nav>
+
+        <section class="snippet-hero">
+            <div class="hero-text">
+                <h1 class="snippet-title">코드 부분 분석하기</h1>
+                <p class="snippet-sub">코드를 붙여넣고 <strong>리팩토링 실행</strong>을 누르면 개선된 코드를 자동으로 보여드립니다.</p>
+            </div>
+            <button type="button" class="history-btn" id="historyBtn" aria-label="리팩토링 기록 보기">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"/>
+                    <polyline points="12,7 12,12 15.5,14"/>
+                </svg>
+                <span>리팩토링 기록</span>
+                <span class="history-badge" id="historyBadge" hidden>0</span>
+            </button>
+        </section>
+
+        <!-- Language tabs -->
+        <div class="lang-tabs" role="tablist">
+            <button type="button" class="lang-tab active" data-lang="javascript" role="tab">JavaScript</button>
+            <button type="button" class="lang-tab" data-lang="typescript" role="tab">TypeScript</button>
+            <button type="button" class="lang-tab" data-lang="python" role="tab">Python</button>
+            <button type="button" class="lang-tab" data-lang="java" role="tab">Java</button>
+            <button type="button" class="lang-tab" data-lang="jsx" role="tab">React (JSX)</button>
+        </div>
+
+        <!-- Editor grid -->
+        <div class="editor-grid">
+            <!-- Input -->
+            <div class="editor-panel">
+                <div class="editor-header">
+                    <div class="editor-label">
+                        <span class="editor-dot input"></span>
+                        <span class="editor-title">원본 코드</span>
+                        <span class="editor-lang" id="inputLang">JavaScript</span>
+                    </div>
+                    <div class="editor-actions">
+                        <button type="button" class="editor-btn" id="loadExampleBtn">예시 불러오기</button>
+                        <button type="button" class="editor-btn ghost" id="clearBtn">비우기</button>
+                    </div>
+                </div>
+                <textarea class="code-input" id="codeInput" spellcheck="false"
+                    placeholder="여기에 분석할 코드를 붙여넣으세요.
+또는 우측 상단의 '예시 불러오기'를 눌러 샘플 코드를 사용할 수 있어요."></textarea>
+            </div>
+
+            <!-- Output -->
+            <div class="editor-panel">
+                <div class="editor-header">
+                    <div class="editor-label">
+                        <span class="editor-dot output"></span>
+                        <span class="editor-title">리팩토링 결과</span>
+                        <span class="editor-status" id="outputStatus">대기 중</span>
+                    </div>
+                    <div class="editor-actions">
+                        <button type="button" class="editor-btn" id="copyBtn" disabled>복사하기</button>
+                    </div>
+                </div>
+                <div class="code-output" id="codeOutput">
+                    <div class="output-placeholder" id="outputPlaceholder">
+                        <svg viewBox="0 0 48 48" width="56" height="56" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="16,16 8,24 16,32"/>
+                            <polyline points="32,16 40,24 32,32"/>
+                            <line x1="28" y1="12" x2="20" y2="36"/>
+                        </svg>
+                        <p>리팩토링 버튼을 누르면<br>개선된 코드가 여기에 표시됩니다.</p>
+                    </div>
+                    <pre class="output-pre" hidden><code id="outputCode" class="hljs"></code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Metrics + Action bar -->
+        <div class="action-bar">
+            <div class="metrics" id="metrics" hidden>
+                <div class="metric">
+                    <span class="metric-label">코드 라인</span>
+                    <span class="metric-value"><span id="mLinesBefore">0</span> <span class="arrow">→</span> <span id="mLinesAfter" class="good">0</span></span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">복잡도 (Cyclomatic)</span>
+                    <span class="metric-value"><span id="mCxBefore">0</span> <span class="arrow">→</span> <span id="mCxAfter" class="good">0</span></span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Code Smell</span>
+                    <span class="metric-value"><span id="mSmellBefore">0</span> <span class="arrow">→</span> <span id="mSmellAfter" class="good">0</span></span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">품질 점수</span>
+                    <span class="metric-value"><span id="mScoreBefore">0</span> <span class="arrow">→</span> <span id="mScoreAfter" class="good">0</span></span>
+                </div>
+            </div>
+            <button type="button" class="refactor-btn" id="refactorBtn">
+                <span class="btn-text">리팩토링 실행</span>
+                <span class="btn-spinner" aria-hidden="true"></span>
+            </button>
+        </div>
+
+        <!-- Refactoring notes shown after analysis -->
+        <section class="notes" id="notes" hidden>
+            <h3 class="notes-title">적용된 개선 사항</h3>
+            <ul class="notes-list" id="notesList"></ul>
+        </section>
+    </main>
+
+    <!-- History drawer -->
+    <aside class="history-drawer" id="historyDrawer" aria-hidden="true">
+        <header class="drawer-header">
+            <div>
+                <h3 class="drawer-title">리팩토링 기록</h3>
+                <p class="drawer-count" id="drawerCount">0개의 기록</p>
+            </div>
+            <button type="button" class="drawer-close" id="drawerCloseBtn" aria-label="닫기">&times;</button>
+        </header>
+        <div class="drawer-actions">
+            <button type="button" class="drawer-clear" id="clearHistoryBtn">전체 비우기</button>
+        </div>
+        <div class="drawer-list" id="historyList">
+            <div class="drawer-empty" id="historyEmpty">
+                <svg viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="24" cy="24" r="18"/>
+                    <polyline points="24,14 24,24 31,28"/>
+                </svg>
+                <p>아직 저장된 기록이 없어요.<br>리팩토링을 실행하면 여기에 쌓입니다.</p>
+            </div>
+        </div>
+    </aside>
+    <div class="drawer-backdrop" id="drawerBackdrop" hidden></div>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/home.js"></script>
+    <script src="scripts/snippet.js"></script>
+</body>
+</html>

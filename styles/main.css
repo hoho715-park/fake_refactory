@@ -1,0 +1,241 @@
+@font-face {
+    font-family: 'IAmAPlayer';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/IAMAPLAYER.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #2b3346;
+    background-color: #eaf2fb;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.bg-image {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    width: auto;
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ============ Header ============ */
+.site-header {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding: 18px 56px;
+    position: relative;
+    z-index: 10;
+}
+
+.logo {
+    margin-right: auto;
+}
+
+.logo img {
+    height: 52px;
+    width: auto;
+    display: block;
+}
+
+.main-nav {
+    display: flex;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.nav-list > li > a,
+.nav-toggle {
+    font-size: 17px;
+    font-weight: 600;
+    color: #2b3346;
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 6px 4px;
+    transition: color 0.15s ease;
+}
+
+.nav-list > li > a:hover,
+.nav-toggle:hover {
+    color: #5078b4;
+}
+
+.caret {
+    font-size: 12px;
+    margin-left: 2px;
+}
+
+.has-dropdown {
+    position: relative;
+}
+
+.dropdown {
+    list-style: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffffff;
+    min-width: 160px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(60, 80, 120, 0.15);
+    padding: 8px 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    transform-origin: top center;
+}
+
+.has-dropdown.open .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.dropdown li a {
+    display: block;
+    padding: 10px 18px;
+    color: #2b3346;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: background 0.12s ease;
+}
+
+.dropdown li a:hover {
+    background: #f1f5fb;
+}
+
+.login-btn {
+    background: #8aa5cf;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px 28px;
+    border-radius: 22px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 6px rgba(120, 140, 180, 0.25);
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.login-btn:hover {
+    background: #7a96c2;
+}
+
+.login-btn:active {
+    transform: translateY(1px);
+}
+
+/* ============ Hero ============ */
+.hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 40px 100px 80px;
+}
+
+.hero-content {
+    max-width: 520px;
+}
+
+.hero-title {
+    font-family: 'IAmAPlayer', sans-serif;
+    font-size: 84px;
+    line-height: 1;
+    color: #2b3346;
+    letter-spacing: 0.01em;
+    margin-bottom: 18px;
+}
+
+.hero-tagline {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2b3346;
+    margin-bottom: 28px;
+}
+
+.hero-description {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #4a5468;
+    margin-bottom: 36px;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #ffffff;
+    color: #2b3346;
+    text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid #d2dceb;
+    box-shadow: 0 2px 8px rgba(80, 110, 160, 0.08);
+    transition: transform 0.1s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.cta-button:hover {
+    background: #f7faff;
+    box-shadow: 0 4px 14px rgba(80, 110, 160, 0.16);
+}
+
+.cta-button:active {
+    transform: translateY(1px);
+}
+
+/* ============ Responsive ============ */
+@media (max-width: 960px) {
+    .site-header {
+        padding: 16px 24px;
+    }
+    .nav-list {
+        gap: 24px;
+    }
+    .hero {
+        padding: 24px 40px 60px;
+    }
+    .hero-title {
+        font-size: 60px;
+    }
+}
+
+@media (max-width: 640px) {
+    .main-nav {
+        display: none;
+    }
+    .hero-title {
+        font-size: 48px;
+    }
+    .hero-tagline {
+        font-size: 20px;
+    }
+}

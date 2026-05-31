@@ -285,6 +285,54 @@
     background: transparent;
 }
 
+/* ----- Custom scrollbar (dark) ----- */
+.code-input,
+.output-pre,
+.code-output,
+.drawer-list {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.14) transparent;
+}
+
+.code-input::-webkit-scrollbar,
+.output-pre::-webkit-scrollbar,
+.code-output::-webkit-scrollbar,
+.drawer-list::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.code-input::-webkit-scrollbar-track,
+.output-pre::-webkit-scrollbar-track,
+.code-output::-webkit-scrollbar-track,
+.drawer-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.code-input::-webkit-scrollbar-thumb,
+.output-pre::-webkit-scrollbar-thumb,
+.code-output::-webkit-scrollbar-thumb,
+.drawer-list::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background-clip: padding-box;
+}
+
+.code-input::-webkit-scrollbar-thumb:hover,
+.output-pre::-webkit-scrollbar-thumb:hover,
+.code-output::-webkit-scrollbar-thumb:hover,
+.drawer-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.24);
+    background-clip: padding-box;
+}
+
+.code-input::-webkit-scrollbar-corner,
+.output-pre::-webkit-scrollbar-corner,
+.code-output::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
 /* ----- Code area ----- */
 .code-input,
 .output-pre {

@@ -268,6 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearBtn = document.getElementById('clearBtn');
     const copyBtn = document.getElementById('copyBtn');
     const metricsBox = document.getElementById('metrics');
+    const actionHint = document.getElementById('actionHint');
     const notesBox = document.getElementById('notes');
     const notesList = document.getElementById('notesList');
 
@@ -516,6 +517,7 @@ document.addEventListener('DOMContentLoaded', () => {
         outputStatus.classList.remove('processing', 'done');
         copyBtn.disabled = true;
         metricsBox.hidden = true;
+        actionHint.hidden = false;
         notesBox.hidden = true;
     }
 
@@ -607,6 +609,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('mScoreBefore').textContent = m.scoreBefore;
         document.getElementById('mScoreAfter').textContent = m.scoreAfter;
         metricsBox.hidden = false;
+        actionHint.hidden = true;
     }
 
     function showNotes(notes) {

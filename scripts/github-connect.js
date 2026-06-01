@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 가짜 레포 데이터
     const FAKE_REPOS = [
+        { full_name: 'sh/number_baseball_react', desc: '리액트로 만든 숫자야구 게임 (4자리 + 힌트 시스템)', lang: 'JavaScript', lang_color: '#f1e05a', stars: 17,  updated: '오늘',    visibility: 'public'  },
         { full_name: 'sh/refactory-web',     desc: 'RE:Factory 마케팅 웹사이트',         lang: 'TypeScript', lang_color: '#3178c6', stars: 124, updated: '2일 전',  visibility: 'public'  },
         { full_name: 'sh/parser-core',       desc: 'tree-sitter 기반 멀티 언어 파서 코어', lang: 'Rust',       lang_color: '#dea584', stars: 89,  updated: '5일 전',  visibility: 'private' },
         { full_name: 'sh/refactory-cli',     desc: '터미널에서 사용하는 코드 분석 도구',   lang: 'JavaScript', lang_color: '#f1e05a', stars: 56,  updated: '1주 전',  visibility: 'public'  },

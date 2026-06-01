@@ -342,12 +342,73 @@
     margin: 0;
 }
 
+.viz-toggle {
+    display: inline-flex;
+    background: rgba(0, 0, 0, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 3px;
+    margin-bottom: 12px;
+    gap: 2px;
+}
+
+.viz-toggle-btn {
+    background: transparent;
+    border: none;
+    color: #8a96b0;
+    padding: 7px 14px;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.viz-toggle-btn:hover {
+    color: #c3cde0;
+}
+
+.viz-toggle-btn.active {
+    background: rgba(80, 120, 180, 0.3);
+    color: #ffffff;
+    box-shadow: 0 0 0 1px rgba(122, 152, 200, 0.25) inset;
+}
+
 .viz-body {
     height: 320px;
     background: rgba(0, 0, 0, 0.18);
     border-radius: 10px;
     position: relative;
     overflow: hidden;
+}
+
+/* ----- City view buildings ----- */
+.city-bldg {
+    cursor: pointer;
+    transition: filter 0.2s ease, transform 0.2s ease;
+    transform-origin: bottom;
+    transform-box: fill-box;
+}
+
+.city-bldg:hover {
+    filter: brightness(1.4) drop-shadow(0 0 8px rgba(255, 210, 103, 0.4));
+}
+
+.city-bldg .bldg-label {
+    fill: #c3cde0;
+    font-size: 10px;
+    font-weight: 600;
+    text-anchor: middle;
+    font-family: inherit;
+    pointer-events: none;
+}
+
+.city-bldg:hover .bldg-label {
+    fill: #ffd267;
 }
 
 .viz-hint {

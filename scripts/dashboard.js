@@ -36,8 +36,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, 200);
 
-    // ===== Dependency graph (SVG) =====
-    renderDependencyGraph();
+    // ===== Dependency / City view toggle =====
+    let currentView = 'graph';
+    const vizHint = document.getElementById('vizHint');
+
+    document.querySelectorAll('.viz-toggle-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+            if (btn.dataset.view === currentView) return;
+            document.querySelectorAll('.viz-toggle-btn').forEach((b) => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentView = btn.dataset.view;
+            renderViz();
+        });
+    });
+
+    function renderViz() {
+        if (currentView === 'graph') {
+            renderDependencyGraph();
+            vizHint.textContent = '노드를 호버하면 의존 관계를 강조 표시합니다.';
+        } else {
+            renderCityView();
+            vizHint.textContent = '각 건물이 모듈이에요. 큰 건물일수록 더 중요한 모듈입니다.';
+        }
+    }
+
+    renderViz();
 
     // ===== Language bar =====
     renderLanguageBar();
@@ -278,6 +301,163 @@ document.addEventListener('DOMContentLoaded', () => {
 
         container.innerHTML = '';
         container.appendChild(svg);
+    }
+
+    function renderCityView() {
+        const container = document.getElementById('depGraph');
+        const W = container.clientWidth || 600;
+        const H = 320;
+        const groundY = H - 50;
+
+        // 11개 모듈 → 건물로 (왼쪽부터 도로 따라 늘어선 배치)
+        const buildings = [
+            { id: 'hooks',  x: 0.045, w: 38, h: 70,  color: '#3a4566' },
+            { id: 'config', x: 0.13,  w: 44, h: 60,  color: '#3a4566' },
+            { id: 'ui',     x: 0.22,  w: 60, h: 130, color: '#4d5a86' },
+            { id: 'utils',  x: 0.33,  w: 44, h: 78,  color: '#3a4566' },
+            { id: 'router', x: 0.42,  w: 56, h: 115, color: '#4d5a86' },
+            { id: 'app',    x: 0.50,  w: 76, h: 195, color: '#6a7fb6' },
+            { id: 'store',  x: 0.59,  w: 56, h: 100, color: '#4d5a86' },
+            { id: 'auth',   x: 0.68,  w: 56, h: 135, color: '#4d5a86' },
+            { id: 'api',    x: 0.78,  w: 64, h: 158, color: '#4d5a86' },
+            { id: 'models', x: 0.88,  w: 44, h: 86,  color: '#3a4566' },
+            { id: 'types',  x: 0.955, w: 38, h: 70,  color: '#3a4566' },
+        ];
+
+        let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="100%" style="display:block">`;
+
+        // === Defs ===
+        svg += `<defs>
+            <linearGradient id="citySky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#0a1432"/>
+                <stop offset="60%" stop-color="#152045"/>
+                <stop offset="100%" stop-color="#1a2552"/>
+            </linearGradient>
+            <radialGradient id="moonGlow" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0%" stop-color="rgba(255,243,200,0.45)"/>
+                <stop offset="100%" stop-color="rgba(255,243,200,0)"/>
+            </radialGradient>
+            <radialGradient id="lightGlow" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0%" stop-color="rgba(255,210,103,0.6)"/>
+                <stop offset="100%" stop-color="rgba(255,210,103,0)"/>
+            </radialGradient>
+        </defs>`;
+
+        // === Sky ===
+        svg += `<rect width="${W}" height="${groundY}" fill="url(#citySky)"/>`;
+
+        // === Stars (결정론적 위치) ===
+        const stars = [
+            [40, 30, 0.7], [110, 50, 0.5], [180, 22, 0.9], [240, 60, 0.6],
+            [310, 35, 0.8], [380, 70, 0.5], [450, 28, 0.7], [70, 90, 0.6],
+            [200, 95, 0.5], [330, 100, 0.6], [420, 90, 0.7], [80, 130, 0.4],
+            [260, 130, 0.5], [490, 110, 0.6], [150, 160, 0.4], [350, 160, 0.5],
+        ];
+        stars.forEach(([sx, sy, op]) => {
+            const px = (sx / 600) * W;
+            svg += `<circle cx="${px}" cy="${sy}" r="1" fill="rgba(255,255,255,${op})"/>`;
+        });
+
+        // === Moon ===
+        const moonX = W * 0.82;
+        const moonY = 50;
+        svg += `<circle cx="${moonX}" cy="${moonY}" r="38" fill="url(#moonGlow)"/>`;
+        svg += `<circle cx="${moonX}" cy="${moonY}" r="14" fill="#fff8d4"/>`;
+        svg += `<circle cx="${moonX + 5}" cy="${moonY - 3}" r="11" fill="#152045"/>`;
+
+        // === Ground ===
+        svg += `<rect x="0" y="${groundY}" width="${W}" height="${H - groundY}" fill="#080d1a"/>`;
+        // 길
+        svg += `<rect x="0" y="${groundY + 14}" width="${W}" height="20" fill="#1a2238"/>`;
+        // 차선
+        for (let dx = -10; dx < W; dx += 32) {
+            svg += `<rect x="${dx}" y="${groundY + 23}" width="14" height="2.5" fill="rgba(255,210,103,0.55)"/>`;
+        }
+
+        // === 가로등 (도로 따라) ===
+        [0.07, 0.18, 0.30, 0.41, 0.54, 0.65, 0.76, 0.88, 0.97].forEach((p) => {
+            const lx = p * W;
+            const ly = groundY;
+            svg += `<circle cx="${lx}" cy="${ly - 15}" r="8" fill="url(#lightGlow)"/>`;
+            svg += `<line x1="${lx}" y1="${ly}" x2="${lx}" y2="${ly - 14}" stroke="#3a4566" stroke-width="1.4"/>`;
+            svg += `<circle cx="${lx}" cy="${ly - 15}" r="2" fill="#ffd267"/>`;
+        });
+
+        // === 나무 (모듈 사이 빈 공간) ===
+        [0.085, 0.295, 0.945].forEach((p) => {
+            const tx = p * W;
+            const ty = groundY;
+            svg += `<polygon points="${tx},${ty - 22} ${tx - 7},${ty} ${tx + 7},${ty}" fill="#2a4030"/>`;
+            svg += `<polygon points="${tx},${ty - 30} ${tx - 6},${ty - 10} ${tx + 6},${ty - 10}" fill="#2f4838"/>`;
+        });
+
+        // === Buildings ===
+        buildings.forEach((b) => {
+            const bx = b.x * W - b.w / 2;
+            const by = groundY - b.h;
+            const isMain = b.id === 'app';
+
+            svg += `<g class="city-bldg" data-id="${b.id}">`;
+
+            // 안테나 (높은 건물만)
+            if (b.h > 110) {
+                svg += `<line x1="${bx + b.w / 2}" y1="${by}" x2="${bx + b.w / 2}" y2="${by - 12}" stroke="#5a6890" stroke-width="1.4"/>`;
+                svg += `<circle cx="${bx + b.w / 2}" cy="${by - 12}" r="2" fill="#ff7d7d">
+                    <animate attributeName="opacity" values="1;0.3;1" dur="1.6s" repeatCount="indefinite"/>
+                </circle>`;
+            }
+
+            // 옥상 (메인 건물)
+            if (isMain) {
+                svg += `<rect x="${bx + b.w * 0.2}" y="${by - 6}" width="${b.w * 0.6}" height="6" fill="${b.color}"/>`;
+                svg += `<rect x="${bx + b.w * 0.4}" y="${by - 10}" width="${b.w * 0.2}" height="4" fill="${b.color}"/>`;
+            }
+
+            // 본체
+            svg += `<rect x="${bx}" y="${by}" width="${b.w}" height="${b.h}" fill="${b.color}" stroke="rgba(255,255,255,0.08)" stroke-width="0.5"/>`;
+
+            // 옆면 그림자
+            svg += `<rect x="${bx + b.w - 4}" y="${by}" width="4" height="${b.h}" fill="rgba(0,0,0,0.18)"/>`;
+
+            // 창문 (격자)
+            const winW = 5, winH = 6, gx = 4, gy = 5;
+            const insetX = 5;
+            const insetY = isMain ? 14 : 10;
+            for (let wy = by + insetY; wy < by + b.h - winH - 4; wy += winH + gy) {
+                for (let wx = bx + insetX; wx < bx + b.w - winW - insetX; wx += winW + gx) {
+                    // 결정론적 lit 패턴 (id 길이 + 좌표)
+                    const seed = (wx * 7 + wy * 13 + b.id.length * 31) % 11;
+                    const isLit = seed > 3;
+                    const color = isLit
+                        ? (seed > 8 ? '#ffe89b' : '#ffd267')
+                        : '#1f2840';
+                    svg += `<rect x="${wx}" y="${wy}" width="${winW}" height="${winH}" fill="${color}"/>`;
+                }
+            }
+
+            // 출입구 (지상 가까이)
+            const doorW = Math.min(10, b.w * 0.25);
+            const doorH = Math.min(14, b.h * 0.12);
+            svg += `<rect x="${bx + (b.w - doorW) / 2}" y="${by + b.h - doorH}" width="${doorW}" height="${doorH}" fill="#ffd267" opacity="0.9"/>`;
+
+            // 라벨
+            const labelY = groundY + 48;
+            svg += `<text class="bldg-label" x="${bx + b.w / 2}" y="${labelY}">${b.id}</text>`;
+
+            svg += `</g>`;
+        });
+
+        // === 메인 빌딩 위 "MAIN" 표시 ===
+        const mainBldg = buildings.find((b) => b.id === 'app');
+        const mbX = mainBldg.x * W;
+        const mbY = groundY - mainBldg.h;
+        svg += `<g pointer-events="none">
+            <rect x="${mbX - 24}" y="${mbY - 28}" width="48" height="16" rx="3" fill="rgba(255,210,103,0.95)"/>
+            <text x="${mbX}" y="${mbY - 17}" text-anchor="middle" fill="#1a2238" font-size="9" font-weight="700" font-family="inherit">MAIN</text>
+        </g>`;
+
+        svg += `</svg>`;
+        container.innerHTML = svg;
     }
 
     function renderLanguageBar() {

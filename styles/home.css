@@ -11,16 +11,24 @@
     opacity: 0.95;
 }
 
-/* ----- Nav (only Code Insight) ----- */
-.page-home .nav-list > li > a {
+/* ----- Nav (dark theme overrides) ----- */
+.page-home .nav-list > li > a,
+.page-home .nav-toggle {
     color: #e8ecf5;
     font-weight: 600;
     transition: color 0.15s ease;
 }
 
-.page-home .nav-list > li > a:hover {
+.page-home .nav-list > li > a:hover,
+.page-home .nav-toggle:hover {
     color: #ffffff;
 }
+
+.page-home .caret {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* Dropdown stays light (white card) regardless of theme — already fine */
 
 /* ----- Profile button ----- */
 .profile-wrap {

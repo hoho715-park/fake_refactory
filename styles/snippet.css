@@ -371,6 +371,30 @@
     font-family: inherit;
 }
 
+/* ----- Custom syntax highlighter tokens ----- */
+.output-pre .tk-keyword  { color: #c678dd; font-weight: 600; }
+.output-pre .tk-builtin  { color: #56b6c2; }
+.output-pre .tk-string   { color: #98c379; }
+.output-pre .tk-number   { color: #d19a66; }
+.output-pre .tk-comment  { color: #5c6370; font-style: italic; }
+.output-pre .tk-function { color: #61afef; }
+.output-pre .tk-class    { color: #e5c07b; }
+.output-pre .tk-tag      { color: #e06c75; }
+.output-pre .tk-attr     { color: #d19a66; }
+.output-pre .tk-punct    { color: #abb2bf; }
+.output-pre .tk-decorator{ color: #e06c75; }
+.output-pre .tk-name     { color: #e8ecf5; }
+
+/* hljs fallback colors (in case hljs runs) */
+.output-pre .hljs-keyword,
+.output-pre .hljs-built_in { color: #c678dd; }
+.output-pre .hljs-string { color: #98c379; }
+.output-pre .hljs-comment { color: #5c6370; font-style: italic; }
+.output-pre .hljs-number, .output-pre .hljs-literal { color: #d19a66; }
+.output-pre .hljs-title, .output-pre .hljs-title.function_ { color: #61afef; }
+.output-pre .hljs-name, .output-pre .hljs-tag { color: #e06c75; }
+.output-pre .hljs-attr { color: #d19a66; }
+
 /* Typing caret */
 .output-pre.typing::after {
     content: '▌';

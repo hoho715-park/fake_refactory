@@ -1,5 +1,144 @@
 // Snippet Analysis — 언어별 예시 + fake 리팩토링 (타이핑 애니메이션)
 
+// ===== 가벼운 자체 신택스 하이라이터 (CDN 의존 X) =====
+const SYNTAX = {
+    javascript: {
+        keywords: 'const let var function return if else for while do switch case break continue class extends new this super import export from default async await try catch finally throw typeof instanceof null undefined true false yield in of void delete'.split(' '),
+        builtins: 'console Object Array String Number Boolean Date Math JSON Promise Map Set WeakMap WeakSet Symbol Error RegExp setTimeout setInterval clearTimeout clearInterval fetch document window'.split(' '),
+        commentLine: '//',
+    },
+    typescript: {
+        keywords: 'const let var function return if else for while do switch case break continue class extends new this super import export from default async await try catch finally throw typeof instanceof null undefined true false yield in of void delete type interface implements enum public private protected readonly abstract static namespace declare as never any unknown number string boolean'.split(' '),
+        builtins: 'console Object Array String Number Boolean Date Math JSON Promise Map Set Symbol Error RegExp Record Partial Required Readonly Pick Omit Exclude Extract'.split(' '),
+        commentLine: '//',
+    },
+    python: {
+        keywords: 'def class return if elif else for while in not and or is None True False import from as try except finally raise with lambda yield pass continue break global nonlocal'.split(' '),
+        builtins: 'print len range str int float list dict tuple set bool sum min max abs round map filter zip enumerate input open type isinstance super self __init__'.split(' '),
+        commentLine: '#',
+    },
+    java: {
+        keywords: 'public private protected static final abstract class interface extends implements return if else for while do switch case break continue new this super import package void int long short byte char float double boolean true false null try catch throw throws finally instanceof'.split(' '),
+        builtins: 'String System List ArrayList Map HashMap Set HashSet Integer Long Double Float Boolean Object Collections Arrays Stream Collectors Objects Optional'.split(' '),
+        commentLine: '//',
+    },
+    jsx: {
+        keywords: 'const let var function return if else for while class extends new this super import export from default async await try catch throw null undefined true false yield'.split(' '),
+        builtins: 'console Object Array String Number Boolean useState useEffect useRef useContext useMemo useCallback useReducer'.split(' '),
+        commentLine: '//',
+    },
+};
+
+function highlightCode(code, lang) {
+    const cfg = SYNTAX[lang] || SYNTAX.javascript;
+    const kwSet = new Set(cfg.keywords);
+    const bSet = new Set(cfg.builtins);
+
+    let out = '';
+    let i = 0;
+    const len = code.length;
+
+    while (i < len) {
+        const ch = code[i];
+        const next = code[i + 1];
+
+        // 줄 주석
+        if (ch === cfg.commentLine[0] && (cfg.commentLine.length === 1 || next === cfg.commentLine[1])) {
+            const end = code.indexOf('\n', i);
+            const stop = end === -1 ? len : end;
+            out += `<span class="tk-comment">${esc(code.slice(i, stop))}</span>`;
+            i = stop;
+            continue;
+        }
+        // 블록 주석 /* */
+        if (ch === '/' && next === '*') {
+            const end = code.indexOf('*/', i + 2);
+            const stop = end === -1 ? len : end + 2;
+            out += `<span class="tk-comment">${esc(code.slice(i, stop))}</span>`;
+            i = stop;
+            continue;
+        }
+        // 문자열
+        if (ch === '"' || ch === "'" || ch === '`') {
+            const quote = ch;
+            let j = i + 1;
+            while (j < len) {
+                if (code[j] === '\\') { j += 2; continue; }
+                if (code[j] === quote) { j++; break; }
+                j++;
+            }
+            out += `<span class="tk-string">${esc(code.slice(i, j))}</span>`;
+            i = j;
+            continue;
+        }
+        // 숫자 (10_000 같은 underscore도 지원)
+        if (/\d/.test(ch)) {
+            let j = i + 1;
+            while (j < len && /[\d._]/.test(code[j])) j++;
+            out += `<span class="tk-number">${esc(code.slice(i, j))}</span>`;
+            i = j;
+            continue;
+        }
+        // 데코레이터 (Python @, Java @)
+        if (ch === '@') {
+            let j = i + 1;
+            while (j < len && /[\w.]/.test(code[j])) j++;
+            if (j > i + 1) {
+                out += `<span class="tk-decorator">${esc(code.slice(i, j))}</span>`;
+                i = j;
+                continue;
+            }
+        }
+        // JSX 태그 <Tag, </Tag
+        if (lang === 'jsx' && ch === '<' && /[A-Za-z\/]/.test(next || '')) {
+            let j = i + 1;
+            if (code[j] === '/') j++;
+            const tagStart = j;
+            while (j < len && /[\w.]/.test(code[j])) j++;
+            if (j > tagStart) {
+                out += esc(code.slice(i, tagStart));
+                out += `<span class="tk-tag">${esc(code.slice(tagStart, j))}</span>`;
+                i = j;
+                continue;
+            }
+        }
+        // 식별자
+        if (/[A-Za-z_$]/.test(ch)) {
+            let j = i + 1;
+            while (j < len && /[\w$]/.test(code[j])) j++;
+            const word = code.slice(i, j);
+
+            // 분류
+            let cls = 'name';
+            if (kwSet.has(word)) cls = 'keyword';
+            else if (bSet.has(word)) cls = 'builtin';
+            else {
+                // 클래스명 (대문자 시작) — function 호출이 아닐 때
+                const after = code.slice(j).match(/^\s*\(/);
+                if (after) cls = 'function';
+                else if (/^[A-Z]/.test(word)) cls = 'class';
+            }
+            out += `<span class="tk-${cls}">${esc(word)}</span>`;
+            i = j;
+            continue;
+        }
+
+        // 그 외 (구두점/공백)
+        out += esc(ch);
+        i++;
+    }
+
+    return out;
+
+    function esc(s) {
+        return String(s)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+}
+
+
 const EXAMPLES = {
     javascript: {
         label: 'JavaScript',
@@ -455,9 +594,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (item.after) {
             outputPlaceholder.hidden = true;
             outputPre.hidden = false;
-            outputCode.textContent = item.after;
-            outputCode.className = `hljs language-${EXAMPLES[item.lang]?.hljs || item.lang}`;
-            if (window.hljs) window.hljs.highlightElement(outputCode);
+            outputCode.innerHTML = highlightCode(item.after, EXAMPLES[item.lang]?.hljs || item.lang);
             outputStatus.textContent = '복원됨';
             outputStatus.classList.remove('processing');
             outputStatus.classList.add('done');
@@ -551,11 +688,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 refactorBtn.querySelector('.btn-text').textContent = '다시 실행';
                 copyBtn.disabled = false;
 
-                // hljs 적용
-                outputCode.className = `hljs language-${data.hljs}`;
-                if (window.hljs) {
-                    window.hljs.highlightElement(outputCode);
-                }
+                // 자체 신택스 하이라이팅 적용
+                outputCode.innerHTML = highlightCode(data.after, data.hljs);
 
                 showMetrics(data.metrics);
                 showNotes(data.notes);

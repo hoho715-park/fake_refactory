@@ -85,6 +85,21 @@
 
 .primary-btn-d:hover { filter: brightness(1.06); }
 .primary-btn-d:active { transform: translateY(1px); }
+.primary-btn-d:disabled { opacity: 0.7; cursor: progress; }
+
+.dl-spinner {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #ffffff;
+    display: inline-block;
+    animation: dl-spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+@keyframes dl-spin { to { transform: rotate(360deg); } }
 
 .ghost-btn-d {
     background: transparent;

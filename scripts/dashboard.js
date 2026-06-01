@@ -56,9 +56,88 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'project-analysis.html';
     });
 
-    document.getElementById('downloadBtn').addEventListener('click', () => {
-        showToast('리포트가 다운로드되었습니다. (refactory-report.pdf)');
-    });
+    document.getElementById('downloadBtn').addEventListener('click', downloadReport);
+
+    async function downloadReport() {
+        const btn = document.getElementById('downloadBtn');
+        const originalHtml = btn.innerHTML;
+
+        // 라이브러리 로드 확인
+        if (!window.html2canvas || !window.jspdf) {
+            showToast('PDF 라이브러리를 불러오는 중입니다. 잠시 후 다시 시도해 주세요.');
+            return;
+        }
+
+        // 버튼 로딩 상태
+        btn.disabled = true;
+        btn.innerHTML = '<span class="dl-spinner"></span> 리포트 생성 중...';
+
+        try {
+            // 파일명 만들기: 확장자 제거 + GitHub user/ prefix 제거 + 안전 문자
+            const projectName = document.getElementById('projectName').textContent.trim();
+            const safe = projectName
+                .replace(/\.[^./]+$/, '')        // 확장자 제거 (.zip 등)
+                .replace(/^.*\//, '')             // user/ 부분 제거
+                .replace(/[<>:"/\\|?*\x00-\x1f]/g, '_')
+                .trim() || 'project';
+            const filename = `${safe}_분석.pdf`;
+
+            // 대상 영역
+            const target = document.querySelector('.dashboard-main');
+
+            // 잠시 토스트 닫기
+            await new Promise((r) => setTimeout(r, 50));
+
+            // 캔버스로 렌더링 (배경 어두운 톤 유지)
+            const canvas = await window.html2canvas(target, {
+                scale: 2,
+                backgroundColor: '#091322',
+                useCORS: true,
+                logging: false,
+                windowWidth: target.scrollWidth,
+                windowHeight: target.scrollHeight,
+            });
+
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({
+                orientation: 'p',
+                unit: 'pt',
+                format: 'a4',
+                compress: true,
+            });
+
+            const pageW = pdf.internal.pageSize.getWidth();
+            const pageH = pdf.internal.pageSize.getHeight();
+
+            // 이미지의 PDF 너비 = pageW, 높이는 비율 맞춰 계산
+            const imgW = pageW;
+            const imgH = (canvas.height * imgW) / canvas.width;
+
+            // 멀티 페이지 분할
+            let heightLeft = imgH;
+            let position = 0;
+            const imgData = canvas.toDataURL('image/jpeg', 0.92);
+
+            pdf.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
+            heightLeft -= pageH;
+
+            while (heightLeft > 0) {
+                position -= pageH;
+                pdf.addPage();
+                pdf.addImage(imgData, 'JPEG', 0, position, imgW, imgH);
+                heightLeft -= pageH;
+            }
+
+            pdf.save(filename);
+            showToast(`${filename} 저장됨`);
+        } catch (err) {
+            console.error('PDF 생성 실패:', err);
+            showToast('리포트 생성 중 오류가 발생했습니다.');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalHtml;
+        }
+    }
 
     // ===========================================
 

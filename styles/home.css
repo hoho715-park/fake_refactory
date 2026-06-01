@@ -187,6 +187,42 @@
     box-shadow: 0 6px 22px rgba(0, 0, 0, 0.4);
 }
 
+/* ----- Breadcrumb (shared across logged-in subpages) ----- */
+.breadcrumb {
+    font-family: inherit;
+    font-size: 13.5px;
+    color: #8a96b0;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.breadcrumb a {
+    color: #a8c0e8;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.breadcrumb a:visited {
+    color: #a8c0e8;
+}
+
+.breadcrumb a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.breadcrumb .sep {
+    color: #4a5468;
+}
+
+.breadcrumb .current {
+    color: #ffffff;
+    font-weight: 600;
+}
+
 /* ----- Background image at natural ratio, right-bottom anchored ----- */
 .page-home .bg-image {
     position: fixed;

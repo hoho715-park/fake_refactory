@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>분석 결과 - RE:FACTORY</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/home.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+</head>
+<body class="page-home page-dashboard">
+    <header class="site-header home-header">
+        <a href="home.html" class="logo">
+            <img src="assets/images/logo.png" alt="RE:FACTORY">
+        </a>
+
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li><a href="diagnose.html" class="active">Code Insight</a></li>
+            </ul>
+        </nav>
+
+        <div class="profile-wrap">
+            <button type="button" class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+                <span class="profile-avatar">U</span>
+                <span class="profile-name">User</span>
+                <span class="profile-caret">&#9662;</span>
+            </button>
+            <ul class="profile-menu" id="profileMenu">
+                <li class="profile-menu-header">
+                    <span class="profile-avatar lg">U</span>
+                    <div>
+                        <p class="profile-menu-name">User</p>
+                        <p class="profile-menu-email">user@refactory.io</p>
+                    </div>
+                </li>
+                <li><a href="mypage.html">마이페이지</a></li>
+                <li><a href="my-code.html">내 코드</a></li>
+                <li><a href="settings.html">설정</a></li>
+                <li class="divider"></li>
+                <li><a href="index.html" class="logout-link">로그아웃</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <nav class="breadcrumb">
+            <a href="diagnose.html">Code Insight</a>
+            <span class="sep">/</span>
+            <a href="project-analysis.html">프로젝트 분석</a>
+            <span class="sep">/</span>
+            <span class="current">분석 결과</span>
+        </nav>
+
+        <!-- Project header -->
+        <header class="project-header">
+            <div class="project-info">
+                <span class="project-source" id="projectSource">ZIP Archive</span>
+                <h1 class="project-name" id="projectName">project</h1>
+                <p class="project-meta">
+                    <span id="projectLang">JavaScript</span>
+                    <span class="dot">·</span>
+                    <span id="projectFiles">147 files</span>
+                    <span class="dot">·</span>
+                    <span id="projectLines">12,438 lines</span>
+                    <span class="dot">·</span>
+                    <span>분석 완료 방금 전</span>
+                </p>
+            </div>
+            <div class="project-actions">
+                <button type="button" class="ghost-btn-d" id="reAnalyzeBtn">다시 분석</button>
+                <button type="button" class="primary-btn-d" id="downloadBtn">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7,10 12,15 17,10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    리포트 다운로드
+                </button>
+            </div>
+        </header>
+
+        <!-- Overview -->
+        <section class="overview-grid">
+            <!-- Score card -->
+            <div class="card score-card">
+                <p class="card-eyebrow">Overall Quality</p>
+                <div class="score-circle-wrap">
+                    <svg class="score-circle" viewBox="0 0 120 120" aria-hidden="true">
+                        <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
+                        <circle id="scoreArc" cx="60" cy="60" r="52" fill="none" stroke="url(#scoreGradient)" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 327" transform="rotate(-90 60 60)"/>
+                        <defs>
+                            <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#5078b4"/>
+                                <stop offset="100%" stop-color="#5fcb88"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <div class="score-text">
+                        <span class="score-num" id="scoreNum">0</span>
+                        <span class="score-of">/ 100</span>
+                    </div>
+                </div>
+                <p class="score-grade" id="scoreGrade">우수</p>
+            </div>
+
+            <!-- Sub metrics -->
+            <div class="card sub-metrics">
+                <p class="card-eyebrow">Score Breakdown</p>
+                <div class="sub-metric">
+                    <div class="sub-metric-head">
+                        <span class="sub-metric-name">복잡도 관리</span>
+                        <span class="sub-metric-val" data-val="82">0</span>
+                    </div>
+                    <div class="meter"><div class="meter-fill" style="--target:82%"></div></div>
+                </div>
+                <div class="sub-metric">
+                    <div class="sub-metric-head">
+                        <span class="sub-metric-name">유지보수성</span>
+                        <span class="sub-metric-val" data-val="91">0</span>
+                    </div>
+                    <div class="meter"><div class="meter-fill" style="--target:91%"></div></div>
+                </div>
+                <div class="sub-metric">
+                    <div class="sub-metric-head">
+                        <span class="sub-metric-name">중복 제거</span>
+                        <span class="sub-metric-val" data-val="88">0</span>
+                    </div>
+                    <div class="meter"><div class="meter-fill" style="--target:88%"></div></div>
+                </div>
+                <div class="sub-metric">
+                    <div class="sub-metric-head">
+                        <span class="sub-metric-name">Code Smell</span>
+                        <span class="sub-metric-val" data-val="84">0</span>
+                    </div>
+                    <div class="meter"><div class="meter-fill" style="--target:84%"></div></div>
+                </div>
+            </div>
+
+            <!-- Quick stats -->
+            <div class="stat-grid">
+                <div class="card stat-card">
+                    <p class="stat-label">총 함수</p>
+                    <p class="stat-value">428</p>
+                    <p class="stat-delta good">↑ 22 추가</p>
+                </div>
+                <div class="card stat-card">
+                    <p class="stat-label">평균 복잡도</p>
+                    <p class="stat-value">3.2</p>
+                    <p class="stat-delta good">↓ 0.8 개선</p>
+                </div>
+                <div class="card stat-card">
+                    <p class="stat-label">중복 코드</p>
+                    <p class="stat-value">2.4%</p>
+                    <p class="stat-delta neutral">변동 없음</p>
+                </div>
+                <div class="card stat-card">
+                    <p class="stat-label">테스트 커버리지</p>
+                    <p class="stat-value">76%</p>
+                    <p class="stat-delta good">↑ 4%p</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visualization -->
+        <section class="viz-section">
+            <h2 class="section-h2">구조 시각화</h2>
+            <div class="viz-grid">
+                <div class="card viz-card">
+                    <div class="viz-head">
+                        <h3>모듈 의존 구조</h3>
+                        <span class="badge">28 modules · 92 edges</span>
+                    </div>
+                    <div class="viz-body" id="depGraph"></div>
+                    <p class="viz-hint">노드를 호버하면 의존 관계를 강조 표시합니다.</p>
+                </div>
+
+                <div class="card viz-card">
+                    <div class="viz-head">
+                        <h3>언어 비중</h3>
+                        <span class="badge">파일 수 기준</span>
+                    </div>
+                    <div class="lang-bar" id="langBar"></div>
+                    <ul class="lang-legend" id="langLegend"></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quality -->
+        <section class="quality-section">
+            <h2 class="section-h2">품질 평가</h2>
+            <div class="quality-grid">
+                <!-- File table -->
+                <div class="card file-table-card">
+                    <div class="card-head">
+                        <h3>파일별 점수 (낮은 순)</h3>
+                        <span class="badge">상위 8개</span>
+                    </div>
+                    <table class="file-table">
+                        <thead>
+                            <tr>
+                                <th>파일</th>
+                                <th>라인</th>
+                                <th>복잡도</th>
+                                <th>점수</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fileTableBody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Top issues -->
+                <div class="card issues-card">
+                    <div class="card-head">
+                        <h3>주요 이슈</h3>
+                        <span class="badge">18건 발견</span>
+                    </div>
+                    <ul class="issues-list" id="issuesList"></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Refactoring suggestions -->
+        <section class="suggest-section">
+            <h2 class="section-h2">리팩토링 제안</h2>
+            <div class="suggest-list" id="suggestList"></div>
+        </section>
+    </main>
+
+    <!-- Toast -->
+    <div class="toast-d" id="toastD" role="status" aria-live="polite">
+        <span class="toast-d-icon">&#10003;</span>
+        <span class="toast-d-msg" id="toastDMsg">리포트가 다운로드되었습니다.</span>
+    </div>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/home.js"></script>
+    <script src="scripts/dashboard.js"></script>
+</body>
+</html>

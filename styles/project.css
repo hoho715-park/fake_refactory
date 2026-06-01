@@ -1,0 +1,28 @@
+/* ============ Project Analysis Selection Page ============ */
+
+/* ----- Icon accents per card ----- */
+.choice-icon-wrap.zip-icon {
+    background: linear-gradient(135deg, rgba(80, 180, 140, 0.22), rgba(80, 180, 140, 0.05));
+    border-color: rgba(120, 200, 165, 0.35);
+    color: #8fdcb4;
+}
+
+.choice-icon-wrap.github-icon {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04));
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+/* ----- Project page top stripe accent on hover ----- */
+.project-choice[data-type="zip"]::before {
+    background: linear-gradient(90deg, #5fcb88, #8fdcb4);
+}
+
+.project-choice[data-type="github"]::before {
+    background: linear-gradient(90deg, #c3cde0, #ffffff);
+}
+
+/* Tag color tweak — github tags slightly dimmer */
+.project-choice[data-type="github"] .choice-tag {
+    background: rgba(255, 255, 255, 0.08);
+}

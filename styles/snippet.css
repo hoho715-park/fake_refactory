@@ -24,35 +24,6 @@
     padding: 32px 40px 80px;
 }
 
-/* ----- Breadcrumb ----- */
-.breadcrumb {
-    font-size: 13.5px;
-    color: #8a96b0;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.breadcrumb a {
-    color: #a8c0e8;
-    text-decoration: none;
-}
-
-.breadcrumb a:hover {
-    text-decoration: underline;
-    text-underline-offset: 2px;
-}
-
-.breadcrumb .sep {
-    color: #4a5468;
-}
-
-.breadcrumb .current {
-    color: #ffffff;
-    font-weight: 600;
-}
-
 /* ----- Hero ----- */
 .snippet-hero {
     margin-bottom: 28px;

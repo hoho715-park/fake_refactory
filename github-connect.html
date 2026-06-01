@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub 연동 - RE:FACTORY</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/home.css">
+    <link rel="stylesheet" href="styles/upload.css">
+</head>
+<body class="page-home page-github">
+    <header class="site-header home-header">
+        <a href="home.html" class="logo">
+            <img src="assets/images/logo.png" alt="RE:FACTORY">
+        </a>
+
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li><a href="diagnose.html" class="active">Code Insight</a></li>
+            </ul>
+        </nav>
+
+        <div class="profile-wrap">
+            <button type="button" class="profile-btn" id="profileBtn" aria-haspopup="true" aria-expanded="false">
+                <span class="profile-avatar">U</span>
+                <span class="profile-name">User</span>
+                <span class="profile-caret">&#9662;</span>
+            </button>
+            <ul class="profile-menu" id="profileMenu">
+                <li class="profile-menu-header">
+                    <span class="profile-avatar lg">U</span>
+                    <div>
+                        <p class="profile-menu-name">User</p>
+                        <p class="profile-menu-email">user@refactory.io</p>
+                    </div>
+                </li>
+                <li><a href="mypage.html">마이페이지</a></li>
+                <li><a href="my-code.html">내 코드</a></li>
+                <li><a href="settings.html">설정</a></li>
+                <li class="divider"></li>
+                <li><a href="index.html" class="logout-link">로그아웃</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="upload-main">
+        <nav class="breadcrumb">
+            <a href="diagnose.html">Code Insight</a>
+            <span class="sep">/</span>
+            <a href="project-analysis.html">프로젝트 분석하기</a>
+            <span class="sep">/</span>
+            <span class="current">GitHub 연동</span>
+        </nav>
+
+        <section class="upload-hero">
+            <h1 id="heroTitle">GitHub 저장소 연결</h1>
+            <p id="heroSub">Personal Access Token을 입력하면 본인의 저장소 목록을 불러옵니다. 토큰은 서버에 저장되지 않으며, 분석 후 즉시 폐기됩니다.</p>
+        </section>
+
+        <!-- Stage 1: Token input -->
+        <div class="stage-card" id="stageToken">
+            <div class="token-card">
+                <div class="token-label">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                    </svg>
+                    GitHub Personal Access Token
+                </div>
+
+                <div class="option-group">
+                    <label for="tokenInput">토큰 입력</label>
+                    <div class="token-input-wrap">
+                        <input type="password" id="tokenInput" class="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off" spellcheck="false">
+                        <button type="button" class="token-toggle" id="tokenToggle">표시</button>
+                    </div>
+                </div>
+
+                <p class="token-hint">
+                    필요한 권한: <code>repo</code> (Private 저장소 분석 시) · <code>public_repo</code> (Public만 분석 시)<br>
+                    <a href="#" id="howToGet">토큰 발급 방법 안내 →</a>
+                </p>
+
+                <div class="error-banner" id="tokenError" hidden>토큰을 입력해 주세요.</div>
+
+                <div class="action-row">
+                    <p class="hint">토큰은 분석 종료 시 메모리에서 즉시 폐기됩니다.</p>
+                    <button type="button" class="primary-btn" id="connectBtn">
+                        <span class="btn-text">연결하기</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 2: Connecting -->
+        <div class="stage-card" id="stageConnecting" hidden>
+            <div class="connecting">
+                <span class="spinner"></span>
+                <span id="connectingText">GitHub에 연결 중...</span>
+            </div>
+        </div>
+
+        <!-- Stage 3: Repo list -->
+        <div class="stage-card" id="stageRepos" hidden>
+            <div class="repo-search">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" id="repoSearch" placeholder="저장소 이름으로 검색...">
+            </div>
+
+            <div class="repo-list" id="repoList"></div>
+
+            <div class="action-row">
+                <button type="button" class="ghost-btn" id="backToTokenBtn">← 토큰 다시 입력</button>
+                <button type="button" class="primary-btn" id="analyzeRepoBtn" disabled>
+                    선택한 저장소 분석
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/home.js"></script>
+    <script src="scripts/github-connect.js"></script>
+</body>
+</html>
